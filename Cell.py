@@ -1,7 +1,8 @@
 import os
 from termcolor import colored as c
 import sys
-import subprocess
+import re
+
 
 filename = sys.argv[0]
 filetype = filename[-3:]
@@ -9,8 +10,8 @@ filetype = filename[-3:]
 
 
 while True:
-    error1 = "[Error 1] No such cell command"
-    error2 = "[Error 2] No such file or directory"
+    error1 = "' is not a valid cell command."
+    error2 = "No such valid file or directory."
     cmd = input("Cell>> ")
     
     if cmd == "file open":
@@ -18,7 +19,7 @@ while True:
         try:
             os.startfile(filedir)
         except:
-            print(error2)
+            print(c(error2, "red"))
     elif cmd == "file new":
         dirn = input("  Directory>> ")
         try:
@@ -27,7 +28,7 @@ while True:
             nfile.write(editn)
             nfile.close()
         except:
-            print(error2)
+            print(c(error2, "red"))
     elif cmd == "file open txt":
         diro = input("  File>> ")
         try:
@@ -39,7 +40,7 @@ while True:
             ofiler.close()
             ofilea.close()
         except:
-            print(error2)
+            print(c(error2, "red"))
     elif cmd == "file open cell":
         diroc = input("  File>> ")
         try:
@@ -51,7 +52,7 @@ while True:
             ofilerc.close()
             ofileac.close()
         except:
-            print(error2)
+            print(c(error2, "red"))
     elif cmd == "file read":
         dirr = input("  File>> ")
         try:
@@ -60,9 +61,25 @@ while True:
             input("  "+dirr+">> "+readfile)
             rfile.close()
         except:
-            print(error2)
-    
-    
+            print(c(error2, "red"))
+    elif cmd == "":
+        pass
+    elif cmd == " ":
+        pass
+        
+    elif cmd[:5] == "label":
+        lbl = re.sub(r'.', '', cmd, count = 6)
+        print(lbl)
+    elif cmd[:6] == "input ":
+        inp = re.sub(r'.', '', cmd, count = 7)
+        input(inp)
+    elif cmd[:11] == "input_label":
+        inl = re.sub(r'.', '', cmd, count = 12)
+        inl_result = input(inl)
+        print(inl_result)
+    elif cmd[:6] == "system":
+        sysf = re.sub(r'.', '', cmd, count = 7)
+        os.startfile("C:\\Windows\\"+sysf)
     elif cmd == "system notepad":
         os.startfile("C:\\Windows\\notepad.exe")
     elif cmd == "system explorer.exe":
@@ -131,5 +148,6 @@ while True:
                 """))
     
     else:
-        print(error1)
+        er1 = "'" + cmd + error1
+        print(c(er1, "red"))
 
